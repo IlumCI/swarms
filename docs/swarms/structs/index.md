@@ -38,6 +38,7 @@ Multi-agent systems unlock new levels of intelligence, reliability, and efficien
 | **[SpreadSheetSwarm](https://docs.swarms.world/en/latest/swarms/structs/spreadsheet_swarm/)** | Manages thousands of agents concurrently, tracking tasks and outputs in a structured format. | Massive-scale parallel operations, large-scale data generation and analysis. |
 | **[SwarmRouter](https://docs.swarms.world/en/latest/swarms/structs/swarm_router/)** | Universal orchestrator that provides a single interface to run any type of swarm with dynamic selection. | Simplifying complex workflows, switching between swarm strategies, unified multi-agent management. |
 | **[HierarchicalSwarm](https://docs.swarms.world/en/latest/swarms/structs/hierarchical_swarm/)** | Director agent coordinates specialized worker agents in a hierarchy. | Complex, multi-stage tasks, iterative refinement, enterprise workflows. |
+| **[Board of Directors](https://docs.swarms.world/en/latest/swarms/structs/board_of_directors/)** | Board of directors convenes to discuss, vote, and reach consensus on task distribution. | Democratic decision-making, corporate governance, collective intelligence, strategic planning. |
 | **[Hybrid Hierarchical-Cluster Swarm (HHCS)](https://docs.swarms.world/en/latest/swarms/structs/hhcs/)** | Router agent distributes tasks to specialized swarms for parallel, hierarchical processing. | Enterprise-scale, multi-domain, and highly complex workflows. |
 
 ---
@@ -79,7 +80,71 @@ print(result)
 
 [Full HierarchicalSwarm Documentation →](https://docs.swarms.world/en/latest/swarms/structs/hierarchical_swarm/)
 
+### 🏛️ Board of Directors Example
 
+The Board of Directors provides a sophisticated democratic alternative to the single Director pattern, enabling collective decision-making through voting and consensus. This approach is ideal for corporate governance, strategic planning, and scenarios requiring multiple perspectives.
+
+```python
+from swarms import Agent
+from swarms.structs.board_of_directors_swarm import (
+    BoardOfDirectorsSwarm,
+    BoardMember,
+    BoardMemberRole
+)
+
+# Create board members with specific roles
+chairman = Agent(
+    agent_name="Chairman",
+    agent_description="Chairman of the Board responsible for leading meetings",
+    model_name="gpt-4o-mini",
+    system_prompt="You are the Chairman of the Board..."
+)
+
+vice_chairman = Agent(
+    agent_name="Vice-Chairman",
+    agent_description="Vice Chairman who supports the Chairman",
+    model_name="gpt-4o-mini",
+    system_prompt="You are the Vice Chairman..."
+)
+
+# Create BoardMember objects with roles and expertise
+board_members = [
+    BoardMember(chairman, BoardMemberRole.CHAIRMAN, 1.5, ["leadership", "strategy"]),
+    BoardMember(vice_chairman, BoardMemberRole.VICE_CHAIRMAN, 1.2, ["operations", "coordination"]),
+]
+
+# Create worker agents
+research_agent = Agent(
+    agent_name="Research-Specialist",
+    agent_description="Expert in market research and analysis",
+    model_name="gpt-4o",
+)
+
+financial_agent = Agent(
+    agent_name="Financial-Analyst",
+    agent_description="Specialist in financial analysis and valuation",
+    model_name="gpt-4o",
+)
+
+# Initialize the Board of Directors swarm
+board_swarm = BoardOfDirectorsSwarm(
+    name="Executive_Board_Swarm",
+    description="Executive board with specialized roles for strategic decision-making",
+    board_members=board_members,
+    agents=[research_agent, financial_agent],
+    max_loops=2,
+    verbose=True,
+    decision_threshold=0.6,
+    enable_voting=True,
+    enable_consensus=True,
+)
+
+# Execute a complex task with democratic decision-making
+result = board_swarm.run(task="Analyze the market potential for Tesla (TSLA) stock")
+print(result)
+```
+
+[Full Board of Directors Documentation →](https://docs.swarms.world/en/latest/swarms/structs/board_of_directors/)
 
 ### SequentialWorkflow
 
