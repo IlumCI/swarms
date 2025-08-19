@@ -28,3 +28,4 @@ mcp
 numpy
 openai
 schedule
+orjson>=3.9.0
