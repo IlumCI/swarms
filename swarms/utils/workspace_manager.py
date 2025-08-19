@@ -4,7 +4,7 @@ Simple workspace management functions for creating files and folders.
 Raw utility functions for easy file and folder creation operations.
 """
 
-import json
+import orjson
 import yaml
 from pathlib import Path
 from typing import Optional, Dict, Any
@@ -199,7 +199,7 @@ def create_json_file(
     """
     if not file_name.endswith(".json"):
         file_name += ".json"
-    content = json.dumps(data, indent=2, ensure_ascii=False)
+    content = orjson.dumps(data, option=orjson.OPT_INDENT_2 | orjson.OPT_NON_STR_KEYS | orjson.OPT_SORT_KEYS).decode("utf-8")
     return create_file(file_name, content, parent_path)
 
 
@@ -221,7 +221,7 @@ def create_or_update_json_file(
     """
     if not file_name.endswith(".json"):
         file_name += ".json"
-    content = json.dumps(data, indent=2, ensure_ascii=False)
+    content = orjson.dumps(data, option=orjson.OPT_INDENT_2 | orjson.OPT_NON_STR_KEYS | orjson.OPT_SORT_KEYS).decode("utf-8")
     return create_or_update_file(file_name, content, parent_path)
 
 
