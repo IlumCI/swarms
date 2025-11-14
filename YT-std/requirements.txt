@@ -1,0 +1,25 @@
+# Core dependencies (required)
+swarms>=4.0.0
+loguru>=0.7.0
+tenacity>=8.2.0
+
+# CR-CA agent dependencies (required for causal reasoning)
+networkx>=3.0
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Production video generation (optional but recommended for actual video production)
+google-cloud-texttospeech>=2.14.0
+replicate>=0.25.0
+
+# YouTube API integration (optional but required for upload/analytics features)
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.1.1
+google-auth-oauthlib>=1.1.0
+
+# FFmpeg must be installed separately (required for video composition):
+# Ubuntu/Debian: sudo apt-get install ffmpeg ffprobe
+# macOS: brew install ffmpeg
+# Windows: Download from https://ffmpeg.org/download.html
+# Verify installation: ffmpeg -version && ffprobe -version
+
