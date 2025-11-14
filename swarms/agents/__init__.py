@@ -1,8 +1,13 @@
 from swarms.agents.agent_judge import AgentJudge
+from swarms.agents.chain_of_thought import CoTAgent
 from swarms.agents.consistency_agent import SelfConsistencyAgent
+from swarms.agents.tree_of_thought_agent import ToTAgent
+from swarms.agents.GoTAgent import GoTAgent
+from swarms.agents.AERASIGMA import AERASigmaAgent
 from swarms.agents.create_agents_from_yaml import (
     create_agents_from_yaml,
 )
+from swarms.agents.cr_ca_agent import CRCAAgent
 from swarms.agents.flexion_agent import ReflexionAgent
 from swarms.agents.gkp_agent import GKPAgent
 from swarms.agents.i_agent import IterativeReflectiveExpansion
@@ -22,4 +27,9 @@ __all__ = [
     "ReflexionAgent",
     "GKPAgent",
     "AgentJudge",
+    "CRCAAgent",
+    "CoTAgent",
+    "ToTAgent",
+    "GoTAgent",
+    "AERASigmaAgent",
 ]
