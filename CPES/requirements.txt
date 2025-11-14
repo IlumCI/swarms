@@ -1,0 +1,24 @@
+# Core dependencies
+numpy>=1.21.0
+networkx>=2.6.0
+faiss-cpu>=1.7.0
+sentence-transformers>=2.2.0
+loguru>=0.6.0
+pydantic>=1.8.0
+pyyaml>=6.0
+
+# LLM providers
+openai>=1.0.0
+anthropic>=0.3.0
+litellm>=1.0.0
+
+# Optional dependencies for enhanced functionality
+# pinecone-client>=2.2.0  # For Pinecone vector database
+# qdrant-client>=1.6.0    # For Qdrant vector database
+# chromadb>=0.4.0         # For ChromaDB vector database
+
+# Development dependencies
+pytest>=7.0.0
+black>=22.0.0
+flake8>=4.0.0
+mypy>=0.950
