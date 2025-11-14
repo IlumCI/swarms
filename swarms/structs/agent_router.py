@@ -66,30 +66,8 @@ class AgentRouter:
 
             response = embedding(**params)
 
-            # Handle different response structures from litellm
-            if hasattr(response, "data") and response.data:
-                if hasattr(response.data[0], "embedding"):
-                    embedding_vector = response.data[0].embedding
-                elif (
-                    isinstance(response.data[0], dict)
-                    and "embedding" in response.data[0]
-                ):
-                    embedding_vector = response.data[0]["embedding"]
-                else:
-                    logger.error(
-                        f"Unexpected response structure: {response.data[0]}"
-                    )
-                    raise ValueError(
-                        f"Unexpected embedding response structure: {type(response.data[0])}"
-                    )
-            else:
-                logger.error(
-                    f"Unexpected response structure: {response}"
-                )
-                raise ValueError(
-                    f"Unexpected embedding response structure: {type(response)}"
-                )
-
+            # Extract the embedding from the response
+            embedding_vector = response.data[0].embedding
             return embedding_vector
 
         except Exception as e:
@@ -280,12 +258,6 @@ class AgentRouter:
         except Exception as e:
             logger.error(f"Error finding best agent: {str(e)}")
             raise
-
-    def run(self, task: str) -> Optional[AgentType]:
-        """
-        Run the agent router on a given task.
-        """
-        return self.find_best_agent(task)
 
 
 # # Example usage
