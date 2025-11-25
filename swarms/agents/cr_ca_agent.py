@@ -654,3 +654,21 @@ class CRCALite:
             },
             "steps": max_steps
         }
+
+
+class CRCAAgent(CRCALite):
+    """
+    Backward-compatible alias that exposes the lite implementation under the
+    original CR-CA Agent name.
+    """
+    pass
+
+
+__all__ = [
+    "CausalRelationType",
+    "CausalNode",
+    "CausalEdge",
+    "CounterfactualScenario",
+    "CRCALite",
+    "CRCAAgent",
+]
