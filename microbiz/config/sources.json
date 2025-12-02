@@ -1,0 +1,97 @@
+{
+  "auctions": {
+    "sources": [
+      {
+        "url": "https://www.govdeals.com/index.cfm?fa=Main.AdvSearchResultsNew&searchPg=Category&additionalParams=true&category=00&sortOption=ad&timing=BySimple&timingType=&useTiming=1",
+        "name": "GovDeals",
+        "enabled": true,
+        "priority": 1,
+        "parser_type": "adaptive"
+      },
+      {
+        "url": "https://www.publicsurplus.com/sms/browse/home?catid=0",
+        "name": "PublicSurplus",
+        "enabled": true,
+        "priority": 2,
+        "parser_type": "adaptive"
+      }
+    ]
+  },
+  "tenders": {
+    "sources": [
+      {
+        "url": "https://sam.gov/content/opportunities",
+        "name": "SAM.gov",
+        "enabled": true,
+        "priority": 1,
+        "parser_type": "adaptive"
+      },
+      {
+        "url": "https://www.contracts.gov.uk/",
+        "name": "Contracts Finder",
+        "enabled": true,
+        "priority": 2,
+        "parser_type": "adaptive"
+      }
+    ]
+  },
+  "businesses": {
+    "sources": [
+      {
+        "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent",
+        "name": "SEC EDGAR",
+        "enabled": true,
+        "priority": 1,
+        "parser_type": "adaptive"
+      }
+    ]
+  },
+  "jobs": {
+    "sources": [
+      {
+        "url": "https://www.indeed.com/jobs?q=software+engineer&l=",
+        "name": "Indeed",
+        "enabled": true,
+        "priority": 1,
+        "parser_type": "adaptive"
+      },
+      {
+        "url": "https://stackoverflow.com/jobs",
+        "name": "Stack Overflow Jobs",
+        "enabled": true,
+        "priority": 2,
+        "parser_type": "adaptive"
+      }
+    ]
+  },
+  "osint": {
+    "sources": [
+      {
+        "url": "https://example.com",
+        "name": "Example Domain",
+        "enabled": true,
+        "priority": 1,
+        "parser_type": "adaptive"
+      }
+    ]
+  },
+  "realestate": {
+    "sources": [
+      {
+        "url": "https://www.zillow.com/homes/for_sale/",
+        "name": "Zillow",
+        "enabled": true,
+        "priority": 1,
+        "parser_type": "adaptive"
+      },
+      {
+        "url": "https://www.realtor.com/realestateandhomes-search/",
+        "name": "Realtor.com",
+        "enabled": true,
+        "priority": 2,
+        "parser_type": "adaptive"
+      }
+    ]
+  }
+}
+

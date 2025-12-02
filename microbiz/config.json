@@ -1,0 +1,31 @@
+{
+  "schedule": {
+    "auctions": "02:00",
+    "tenders": "02:20",
+    "businesses": "02:40",
+    "jobs": "03:00",
+    "osint": "03:20",
+    "realestate": "03:40"
+  },
+  "storage": {
+    "gcs_bucket": "data-swarm-bucket",
+    "local_output": "output"
+  },
+  "llm": {
+    "enabled": true,
+    "prefer_swarms": true,
+    "llama_path": null
+  },
+  "memory": {
+    "enabled": false,
+    "type": null
+  },
+  "supervisor": {
+    "check_interval": 30,
+    "retry_backoff_min": 30,
+    "retry_backoff_max": 120,
+    "max_retries": 1,
+    "use_agent_rearrange": false
+  }
+}
+

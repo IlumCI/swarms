@@ -1,0 +1,63 @@
+{
+  "board": {
+    "enabled": true,
+    "chairman_weight": 1.5,
+    "treasurer_weight": 1.0,
+    "secretary_weight": 1.0,
+    "executive_weight": 1.2,
+    "vice_chairman_weight": 1.2,
+    "decision_threshold": 0.6,
+    "enable_voting": true,
+    "enable_consensus": true,
+    "max_loops": 3,
+    "verbose": false,
+    "meeting_schedule": "daily"
+  },
+  "revenue": {
+    "strategies": {
+      "subscription": {
+        "enabled": true,
+        "weekly_price": 9.99,
+        "monthly_price": 29.99,
+        "yearly_price": 299.99
+      },
+      "one_time": {
+        "enabled": true,
+        "basic_price": 19.99,
+        "premium_price": 49.99,
+        "enterprise_price": 199.99
+      },
+      "api": {
+        "enabled": true,
+        "per_request": 0.01,
+        "monthly_1000": 49.99,
+        "monthly_10000": 299.99
+      }
+    }
+  },
+  "operations": {
+    "gumroad": {
+      "enabled": false,
+      "api_key": null
+    },
+    "substack": {
+      "enabled": false,
+      "api_key": null
+    },
+    "github": {
+      "enabled": false,
+      "repo": null,
+      "token": null
+    }
+  },
+  "autonomy": {
+    "enabled": true,
+    "mode": "advisory",
+    "auto_scaling": true,
+    "min_profit_margin": 10.0,
+    "min_success_rate": 0.7,
+    "min_quality_score": 0.7,
+    "kill_switch": false
+  }
+}
+
