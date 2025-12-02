@@ -1,0 +1,12 @@
+PORT=8765
+DB_PATH=time_engine.db
+API_KEY=changeme
+MAX_WORKERS=4
+THROTTLE_INTERVAL=0.5
+
+# Metrics settings
+METRICS_ENABLED=1
+METRICS_PORT=8000
+
+
+

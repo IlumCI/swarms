@@ -1,0 +1,20 @@
+# Core dependencies
+swarms>=0.0.0
+numpy>=1.24.0
+networkx>=3.0
+pydantic>=2.0.0
+
+# Browser automation
+browser-use>=0.1.0
+langchain-openai>=0.1.0
+
+# Web search
+duckduckgo-search>=4.0.0
+
+# Data persistence
+# pysqlite3  # Built-in, but listed for clarity
+
+# Utilities
+python-dotenv>=1.0.0
+loguru>=0.7.0
+

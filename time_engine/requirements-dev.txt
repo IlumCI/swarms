@@ -1,0 +1,10 @@
+pytest>=7.0
+flake8>=6.0
+mypy>=1.9
+
+pytest>=7.0
+matplotlib>=3.0
+numpy>=1.20
+pytest-asyncio
+
+
