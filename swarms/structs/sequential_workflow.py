@@ -90,6 +90,7 @@ class SequentialWorkflow:
         drift_detection: bool = False,
         drift_threshold: float = 0.75,
         drift_model: str = "claude-sonnet-4-5",
+        max_drift_retries: int = 3,
         *args,
         **kwargs,
     ):
@@ -113,6 +114,8 @@ class SequentialWorkflow:
                 A warning is logged when the score falls below this value. Defaults to 0.75.
             drift_model (str, optional): Model used by the drift detection judge agent.
                 Defaults to "claude-sonnet-4-5".
+            max_drift_retries (int, optional): Maximum number of times to rerun the pipeline
+                when drift is detected. Defaults to 3.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
 
@@ -131,6 +134,7 @@ class SequentialWorkflow:
         self.autosave = autosave
         self.verbose = verbose
         self.drift_threshold = drift_threshold
+        self.max_drift_retries = max_drift_retries
         self.drift_agent = (
             Agent(
                 agent_name="DriftDetector",
@@ -231,6 +235,7 @@ class SequentialWorkflow:
     def _run_drift_detection(
         self, task: str, result: str, run_kwargs: dict
     ) -> str:
+        retries = 0
         while True:
             try:
                 raw = self.drift_agent.run(
@@ -253,6 +258,12 @@ class SequentialWorkflow:
             logger.warning(
                 f"Drift detected: score={score:.2f} below threshold={self.drift_threshold}, rerunning pipeline"
             )
+            retries += 1
+            if retries >= self.max_drift_retries:
+                logger.warning(
+                    f"Max drift retries ({self.max_drift_retries}) reached; returning last result"
+                )
+                break
             result = self.agent_rearrange.run(**run_kwargs)
         return result
 
@@ -270,8 +281,9 @@ class SequentialWorkflow:
         If drift_detection is configured, a judge agent scores the final output's semantic
         alignment with the original task after the pipeline completes. If the score falls
         below drift_threshold, the pipeline reruns and the cycle repeats until the score
-        meets the threshold. If the judge output cannot be parsed, drift checking is skipped
-        and the last result is returned as-is.
+        meets the threshold or the maximum number of drift retries (max_drift_retries) is
+        reached. If the judge output cannot be parsed, drift checking is skipped and the
+        last result is returned as-is.
 
         Args:
             task (str): The task for the agents to execute.
