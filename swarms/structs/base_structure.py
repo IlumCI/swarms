@@ -202,7 +202,7 @@ class BaseStructure:
 
     async def run_async(self, *args, **kwargs):
         """Run the structure asynchronously."""
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, self.run, *args, **kwargs
         )
@@ -213,7 +213,7 @@ class BaseStructure:
         Args:
             metadata (Dict[str, Any]): _description_
         """
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, self.save_metadata, metadata
         )
@@ -224,7 +224,7 @@ class BaseStructure:
         Returns:
             Dict[str, Any]: _description_
         """
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, self.load_metadata)
 
     async def log_error_async(self, error_message: str):
@@ -233,7 +233,7 @@ class BaseStructure:
         Args:
             error_message (str): _description_
         """
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, self.log_error, error_message
         )
@@ -247,7 +247,7 @@ class BaseStructure:
             artifact (Any): _description_
             artifact_name (str): _description_
         """
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, self.save_artifact, artifact, artifact_name
         )
@@ -261,7 +261,7 @@ class BaseStructure:
         Returns:
             Any: _description_
         """
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, self.load_artifact, artifact_name
         )
@@ -277,7 +277,7 @@ class BaseStructure:
             event (str): _description_
             event_type (str, optional): _description_. Defaults to "INFO".
         """
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, self.log_event, event, event_type
         )
