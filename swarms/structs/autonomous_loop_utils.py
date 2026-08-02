@@ -603,6 +603,21 @@ def get_autonomous_loop_tool_names() -> List[str]:
 # ============================================================================
 
 
+def _resolve_in_workspace(agent: Any, path: str) -> str:
+    """Resolve *path* against the agent workspace and refuse to leave it."""
+    workspace = os.path.realpath(agent._get_agent_workspace_dir())
+    candidate = (
+        path if os.path.isabs(path) else os.path.join(workspace, path)
+    )
+    real = os.path.realpath(candidate)  # normalizes '..' and resolves symlinks
+    if real != workspace and not real.startswith(workspace + os.sep):
+        raise ValueError(
+            f"Path {path!r} resolves to {real}, which is outside the agent "
+            f"workspace {workspace}."
+        )
+    return real
+
+
 def respond_to_user_tool(
     agent: Any, message: str, message_type: str = "info", **kwargs
 ) -> str:
@@ -656,12 +671,7 @@ def create_file_tool(
         str: Path to the created file or error message
     """
     try:
-        # Resolve path - if relative, use agent workspace
-        if not os.path.isabs(file_path):
-            workspace_dir = agent._get_agent_workspace_dir()
-            full_path = os.path.join(workspace_dir, file_path)
-        else:
-            full_path = file_path
+        full_path = _resolve_in_workspace(agent, file_path)
 
         # Create parent directories if they don't exist
         os.makedirs(os.path.dirname(full_path), exist_ok=True)
@@ -715,12 +725,7 @@ def update_file_tool(
         str: Success message or error message
     """
     try:
-        # Resolve path - if relative, use agent workspace
-        if not os.path.isabs(file_path):
-            workspace_dir = agent._get_agent_workspace_dir()
-            full_path = os.path.join(workspace_dir, file_path)
-        else:
-            full_path = file_path
+        full_path = _resolve_in_workspace(agent, file_path)
 
         # Check if file exists
         if not os.path.exists(full_path):
@@ -769,12 +774,7 @@ def read_file_tool(agent: Any, file_path: str, **kwargs) -> str:
         str: File contents or error message
     """
     try:
-        # Resolve path - if relative, use agent workspace
-        if not os.path.isabs(file_path):
-            workspace_dir = agent._get_agent_workspace_dir()
-            full_path = os.path.join(workspace_dir, file_path)
-        else:
-            full_path = file_path
+        full_path = _resolve_in_workspace(agent, file_path)
 
         # Check if file exists
         if not os.path.exists(full_path):
@@ -819,17 +819,10 @@ def list_directory_tool(
         str: Formatted list of directory contents
     """
     try:
-        # Resolve path - if relative or empty, use agent workspace
-        if not directory_path or not os.path.isabs(directory_path):
-            workspace_dir = agent._get_agent_workspace_dir()
-            if directory_path:
-                full_path = os.path.join(
-                    workspace_dir, directory_path
-                )
-            else:
-                full_path = workspace_dir
+        if not directory_path:
+            full_path = agent._get_agent_workspace_dir()
         else:
-            full_path = directory_path
+            full_path = _resolve_in_workspace(agent, directory_path)
 
         # Check if directory exists
         if not os.path.exists(full_path):
@@ -888,12 +881,7 @@ def delete_file_tool(agent: Any, file_path: str, **kwargs) -> str:
         str: Success message or error message
     """
     try:
-        # Resolve path - if relative, use agent workspace
-        if not os.path.isabs(file_path):
-            workspace_dir = agent._get_agent_workspace_dir()
-            full_path = os.path.join(workspace_dir, file_path)
-        else:
-            full_path = file_path
+        full_path = _resolve_in_workspace(agent, file_path)
 
         # Check if file exists
         if not os.path.exists(full_path):
@@ -1129,16 +1117,10 @@ def grep_tool(
         str: Matching lines or error message
     """
     try:
-        # Resolve path
-        if not path or not os.path.isabs(path):
-            workspace_dir = agent._get_agent_workspace_dir()
-            full_path = (
-                os.path.join(workspace_dir, path)
-                if path
-                else workspace_dir
-            )
+        if not path:
+            full_path = agent._get_agent_workspace_dir()
         else:
-            full_path = path
+            full_path = _resolve_in_workspace(agent, path)
 
         if not os.path.exists(full_path):
             return f"Error: Path does not exist: {full_path}"
