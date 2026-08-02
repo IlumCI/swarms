@@ -1,6 +1,10 @@
 import asyncio
 import os
-from concurrent.futures import ThreadPoolExecutor
+from swarms.telemetry.otel import (
+    ContextThreadPoolExecutor,
+    capture_init,
+    trace_run,
+)
 from typing import Optional
 from pydantic import BaseModel, Field
 
@@ -220,6 +224,8 @@ class ModelRouter:
                 f"Failed to initialize ModelRouter: {str(e)}"
             )
 
+        capture_init(self)
+
     def step(self, task: str):
         """
         Run a single task through the model router.
@@ -270,6 +276,7 @@ class ModelRouter:
 
         return final_output
 
+    @trace_run
     def run(self, task: str):
         """
         Run a task through the model router with memory.
@@ -283,6 +290,7 @@ class ModelRouter:
             task_output = self.step(task_output)
         return task_output
 
+    @trace_run
     def batch_run(self, tasks: list):
         """
         Run multiple tasks in sequence.
@@ -349,7 +357,7 @@ class ModelRouter:
             RuntimeError: If concurrent execution fails
         """
         try:
-            with ThreadPoolExecutor(
+            with ContextThreadPoolExecutor(
                 max_workers=self.max_workers
             ) as executor:
                 outputs = list(executor.map(self.run, tasks))
