@@ -5,8 +5,7 @@ import time
 from datetime import datetime
 from typing import Any, Dict, List, Union
 
-from pydantic import BaseModel, Field
-from pydantic.v1 import validator
+from pydantic import BaseModel, Field, ValidationInfo, field_validator
 
 from swarms.utils.file_processing import create_file_in_folder
 from swarms.utils.loguru_logger import initialize_logger
@@ -54,7 +53,8 @@ class Artifact(BaseModel):
     )
     file_path: str = Field(..., description="The path to the file")
     file_type: str = Field(
-        ...,
+        default="",
+        validate_default=True,
         description="The type of the file",
         # example=".txt",
     )
@@ -67,50 +67,49 @@ class Artifact(BaseModel):
         description="The number of times the file has been edited",
     )
 
-    @validator("file_type", pre=True, always=True)
-    def validate_file_type(cls, v, values):
+    @field_validator("file_type", mode="before")
+    @classmethod
+    def validate_file_type(cls, v: str, info: ValidationInfo) -> str:
         if not v:
-            file_path = values.get("file_path")
-            _, ext = os.path.splitext(file_path)
-            if ext.lower() not in [
-                ".py",
-                ".csv",
-                ".tsv",
-                ".txt",
-                ".json",
-                ".xml",
-                ".html",
-                ".yaml",
-                ".yml",
-                ".md",
-                ".rst",
-                ".log",
-                ".sh",
-                ".bat",
-                ".ps1",
-                ".psm1",
-                ".psd1",
-                ".ps1xml",
-                ".pssc",
-                ".reg",
-                ".mof",
-                ".mfl",
-                ".xaml",
-                ".xml",
-                ".wsf",
-                ".config",
-                ".ini",
-                ".inf",
-                ".json5",
-                ".hcl",
-                ".tf",
-                ".tfvars",
-                ".tsv",
-                ".properties",
-            ]:
-                raise ValueError("Unsupported file type")
-            return ext.lower()
-        return v
+            _, v = os.path.splitext(info.data.get("file_path", ""))
+        if v.lower() not in [
+            ".py",
+            ".csv",
+            ".tsv",
+            ".txt",
+            ".json",
+            ".xml",
+            ".html",
+            ".yaml",
+            ".yml",
+            ".md",
+            ".rst",
+            ".log",
+            ".sh",
+            ".bat",
+            ".ps1",
+            ".psm1",
+            ".psd1",
+            ".ps1xml",
+            ".pssc",
+            ".reg",
+            ".mof",
+            ".mfl",
+            ".xaml",
+            ".xml",
+            ".wsf",
+            ".config",
+            ".ini",
+            ".inf",
+            ".json5",
+            ".hcl",
+            ".tf",
+            ".tfvars",
+            ".tsv",
+            ".properties",
+        ]:
+            raise ValueError(f"Unsupported file type: {v!r}")
+        return v.lower()
 
     def create(self, initial_content: str) -> None:
         """

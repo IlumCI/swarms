@@ -7,9 +7,10 @@ from typing import Any, Callable, List
 from pydantic import (
     BaseModel,
     Field,
+    ValidationInfo,
     constr,
+    field_validator,
 )
-from pydantic.v1 import validator
 
 from swarms.tools.base_tool import BaseTool
 from swarms.utils.loguru_logger import initialize_logger
@@ -63,6 +64,7 @@ class Prompt(BaseModel):
     )
     edit_history: List[str] = Field(
         default_factory=list,
+        validate_default=True,
         description="The history of edits, storing all prompt versions",
     )
     autosave: bool = Field(
@@ -83,14 +85,15 @@ class Prompt(BaseModel):
     )
     llm: Any = None
 
-    @validator("edit_history", pre=True, always=True)
-    def initialize_history(cls, v, values):
+    @field_validator("edit_history", mode="before")
+    @classmethod
+    def initialize_history(cls, v, info: ValidationInfo):
         """
         Initializes the edit history by storing the first version of the prompt.
         """
         if not v:
             return [
-                values["content"]
+                info.data["content"]
             ]  # Store initial version in history
         return v
 
