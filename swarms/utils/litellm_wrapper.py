@@ -24,9 +24,7 @@ import traceback
 from pathlib import Path
 from typing import List, Optional
 
-import litellm
 import requests
-from litellm import completion, supports_vision
 from loguru import logger
 from pydantic import BaseModel
 
@@ -340,6 +338,7 @@ class LiteLLM:
         self.messages = []  # Initialize messages list
 
         # Configure litellm settings
+        import litellm
         litellm.set_verbose = (
             verbose  # Disable verbose mode for better performance
         )
@@ -392,6 +391,7 @@ class LiteLLM:
             For Anthropic reasoning models, thinking_tokens is mandatory. If not provided,
             it will be automatically set to max_tokens / 4.
         """
+        import litellm
         if self.reasoning_enabled:
             supports_reasoning = litellm.supports_reasoning(
                 model=self.model_name
@@ -1063,6 +1063,7 @@ class LiteLLM:
             - The model supports vision capabilities
             - The model supports direct URL passing (checked via LiteLLM)
         """
+        from litellm import supports_vision
         # Don't use direct URL for base64 strings (data URI or raw base64)
         if is_base64_encoded(image):
             return False
@@ -1233,6 +1234,7 @@ class LiteLLM:
             Models that support vision include GPT-4 Vision, Claude 3, Gemini Pro Vision,
             and other vision-capable models.
         """
+        from litellm import supports_vision
         if img is not None:
             out = supports_vision(model=self.model_name)
 
@@ -1423,6 +1425,8 @@ class LiteLLM:
             response = llm.run("Write a story", temperature=0.9, max_tokens=2000)
             ```
         """
+        import litellm
+        from litellm import completion
         try:
             # Prepare messages properly - this handles both task and image together
             messages = self._prepare_messages(task=task, img=img)
