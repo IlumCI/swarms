@@ -125,7 +125,7 @@ def run_agents_concurrently(
         - By default, utilizes nearly all available CPU cores for optimal performance.
         - Any Exception during agent execution is caught and included in the results.
         - If return_agent_output_dict is True, the results dict preserves agent input order.
-        - Otherwise, the results list is in order of completion (not input order).
+        - Otherwise, the results list is in input order, aligned index-for-index with `agents`.
 
     Example:
         >>> agents = [Agent1(), Agent2()]
@@ -175,9 +175,7 @@ def run_agents_concurrently(
                 return output_dict
             else:
                 results = []
-                for future in concurrent.futures.as_completed(
-                    futures
-                ):
+                for future in futures:
                     try:
                         result = future.result()
                         results.append(result)
