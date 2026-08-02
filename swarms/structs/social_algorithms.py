@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 from swarms.structs.agent import Agent
 from swarms.structs.omni_agent_types import AgentType
+from swarms.telemetry.otel import capture_init, trace_run
 from swarms.utils.loguru_logger import initialize_logger
 from swarms.utils.output_types import OutputType
 
@@ -178,6 +179,8 @@ class SocialAlgorithms:
             logger.info(
                 f"Initialized SocialAlgorithm: {self.name} with {len(self.agents)} agents"
             )
+
+        capture_init(self)
 
     def _validate_inputs(self) -> None:
         """
@@ -376,6 +379,7 @@ class SocialAlgorithms:
         """Clear the communication history."""
         self.communication_history.clear()
 
+    @trace_run
     def run(
         self,
         task: str,
@@ -585,6 +589,7 @@ class SocialAlgorithms:
 
         return wrapped_algorithm
 
+    @trace_run
     def run_async(
         self,
         task: str,
